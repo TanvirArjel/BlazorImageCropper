@@ -1,0 +1,54 @@
+﻿@page "/add-product"
+
+<div class="container">
+    <div class="card">
+        <div class="card-header text-center">
+            <h3 class="my-3">
+                <strong>
+                    <i class="fas fa-box"></i> Add Product
+                </strong>
+            </h3>
+        </div>
+
+        <div class="card-body">
+            <EditForm EditContext="EditContext" OnValidSubmit="HandleValidSubmit">
+                <ValidationSummary Model="InputModel" />
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="InputModel.Name" class="form-control" placeholder="Enter product name" />
+                    <label>Name</label>
+                    <ValidationMessage For="@(() => InputModel.Name)" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Image</label>
+                    <InputFile id="inputFile" @bind-Value="InputModel.Name" OnChange="@HandleInputFileChange" class="form-control form-control-lg" />
+                    <ValidationMessage For="@(() => InputModel.Image)" />
+                </div>
+                @if (ImageBase64String != null)
+                {
+                    <div class="mb-3">
+                        <img src="@PreviewImagePath" />
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Resize</span>
+                        <input @bind="Width" type="text" class="form-control" placeholder="Enter width">
+                        <span class="input-group-text"><i class="fas fa-times"></i></span>
+                        <input @bind="Height" type="text" class="form-control" placeholder="Enter height">
+                        <button class="btn btn-outline-secondary" type="button" @onclick="ResizeImageAsync">
+                            Submit
+                        </button>
+                    </div>
+
+                    <div class="alert alert-danger" role="alert">
+                        Attention!: Due to the limitation of time I have implemented this simple image croper. If I get time then I can integrate beautiful
+                        iamge croper libraries with so many options.
+                    </div>
+                }
+                <button class="btn btn-lg btn-success" type="submit">
+                    <i class="far fa-save"></i> Submit
+                </button>
+            </EditForm>
+        </div>
+    </div>
+
+</div>

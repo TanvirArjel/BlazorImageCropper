@@ -1,0 +1,32 @@
+﻿@page "/product-gallery"
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @{
+        if (Products != null)
+        {
+            foreach (var product in Products)
+            {
+                <div class="col">
+                    <div class="card h-100">
+                        <ImageComponent CssClass="card-img-top" Src="@product.ImagePath" AltText="product.Name" />
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="d-flex justify-content-between">
+                                <a class="btn btn-info" href="@($"product-details/{product.Id}")">
+                                   <i class="fas fa-info-circle"></i> See Dettails
+                                </a>
+                                <button class="btn btn-success">
+                                  <i class="fas fa-cart-plus"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
+</div>
