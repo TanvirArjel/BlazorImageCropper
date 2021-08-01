@@ -108,6 +108,14 @@ namespace BlazorImageCropper.Pages
             ShowCroper = true;
         }
 
+        private double CropCurrentWidth { get; set; } = 200;
+        private double CropCurrentHeight { get; set; } = 200;
+        private void HandleCropSizeChanged((double, double) cropSize)
+        {
+            CropCurrentWidth = cropSize.Item1;
+            CropCurrentHeight = cropSize.Item2;
+        }
+
         private async Task DoneCrop()
         {
             ImageCroppedResult args = await cropper.GetCropedResult();
@@ -127,9 +135,11 @@ namespace BlazorImageCropper.Pages
             await UpdatePreviewASync(file);
         }
 
+        private readonly int MaxAllowedFileSize = 10 * 1024 * 1024;
+
         private async Task UpdatePreviewASync(IBrowserFile browserFile)
         {
-            Stream inputFileStream = browserFile.OpenReadStream();
+            Stream inputFileStream = browserFile.OpenReadStream(MaxAllowedFileSize);
             using MemoryStream memoryStream = new MemoryStream();
             await inputFileStream.CopyToAsync(memoryStream);
             byte[] imageBytes = memoryStream.ToArray();

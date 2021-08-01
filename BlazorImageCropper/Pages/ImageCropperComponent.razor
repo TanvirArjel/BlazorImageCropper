@@ -22,7 +22,7 @@
         </div>
         <div class="card-body">
             <center>
-                <img src="@PreviewImagePath" />
+                <img class="img-fluid" src="@PreviewImagePath" />
             </center>
         </div>
     </div>
@@ -31,13 +31,14 @@
 {
     <div class="card">
         <div class="card-body py-0">
-            <Cropper CropperHeight="500" InitCropWidth="@CropWidth" InitCropHeight="@CropHeight" MaxCropedHeight="1080" MaxCropedWidth="1920"
+            <Cropper CropperHeight="500" InitCropWidth="@CropWidth" InitCropHeight="@CropHeight" MaxCropedHeight="500" MaxCropedWidth="1920"
                  @ref="cropper"
                  AspectRatio="AspectRatio==0?1:AspectRatio"
                  RequireAspectRatio="@IsAspectRatioEnabled"
                  InputId="input1"
                  ImageFile="file"
                  @bind-Ratio="ratio"
+                 OnSizeChanged="HandleCropSizeChanged"
                  AnimeGifEnable="true"></Cropper>
         </div>
         <div class="card-footer justify-content-center">
@@ -47,6 +48,15 @@
             }
         </div>
         <div class="card-footer flex-column">
+            <div class="input-group mb-3">
+                <div class="input-group-text">
+                    Current Crop Size
+                </div>
+                <span class="input-group-text">Height</span>
+                <div class="form-control">@CropCurrentWidth</div>
+                <span class="input-group-text">Width</span>
+                <div class="form-control">@CropCurrentHeight</div>
+            </div>
             <div class="input-group mb-3">
                 <div class="input-group-text">
                     <input @bind="IsAspectRatioEnabled" class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
@@ -59,9 +69,9 @@
 
             <div class="input-group">
                 <span class="input-group-text">Width</span>
-                <input @bind-value="CropWidth" type="number" class="form-control" placeholder="Enter width">
+                <input @bind-value="CropWidth" type="number" min="1" max="500" class="form-control" placeholder="Enter width">
                 <span class="input-group-text">Height</span>
-                <input @bind-value="CropHeight" type="number" class="form-control" placeholder="Enter height" disabled="@IsAspectRatioEnabled">
+                <input @bind-value="CropHeight" type="number" min="1" max="1920" class="form-control" placeholder="Enter height" disabled="@IsAspectRatioEnabled">
             </div>
 
         </div>
