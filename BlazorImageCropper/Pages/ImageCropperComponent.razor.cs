@@ -27,73 +27,59 @@ namespace BlazorImageCropper.Pages
             get => _aspectRatioEnalbed;
             set
             {
-                if (value == true)
-                {
-                    AspectRatio = CropHeight / CropHeight;
-                }
-
                 _aspectRatioEnalbed = value;
+                double currentAspect = AspectRatio;
             }
         }
 
-        private double _aspectRatio = 1d;
-        private double AspectRatio
-        {
-            get => _aspectRatio;
-            set
-            {
-                CropHeight = value * CropWidth;
-                _aspectRatio = value;
-            }
-        }
+        private double AspectRatio { get; set; } = 1d;
 
         private double ratio = 1;
 
-        private double cropWidth = 200;
-        private double CropWidth
-        {
-            get => cropWidth;
-            set
-            {
-                if (IsAspectRatioEnabled)
-                {
-                    CropHeight = value * AspectRatio;
-                }
+        private double CropWidth { get; set; } = 200;
 
-                cropWidth = value;
-            }
+        private void OnCropWidthChanged(ChangeEventArgs eventArgs)
+        {
+            CropWidth = double.Parse((string)eventArgs.Value);
+
+            AspectWidth = CropWidth / CropHeight;
+            AspectHeight = 1;
+
+            AspectRatio = CropHeight / CropWidth;
         }
 
         private double CropHeight { get; set; } = 200;
 
-        private double _aspectWidth = 1;
-        private double AspectWidth
+        private void OnCropHeightChanged(ChangeEventArgs eventArgs)
         {
-            get => _aspectWidth;
-            set
-            {
-                if (IsAspectRatioEnabled)
-                {
-                    AspectRatio = AspectHeight / value;
-                }
+            CropHeight = double.Parse((string)eventArgs.Value);
 
-                _aspectWidth = value;
-            }
+            AspectWidth = CropWidth / CropHeight;
+            AspectHeight = 1;
+
+            AspectRatio = CropHeight / CropWidth;
         }
 
-        private double _aspectHeight = 1;
-        private double AspectHeight
-        {
-            get => _aspectHeight;
-            set
-            {
-                if (IsAspectRatioEnabled)
-                {
-                    AspectRatio = value / AspectWidth;
-                }
+        private double AspectWidth { get; set; } = 1;
 
-                _aspectHeight = value;
-            }
+        private void OnAspectWidthChanged(ChangeEventArgs eventArgs)
+        {
+            AspectWidth = double.Parse((string)eventArgs.Value);
+
+            AspectRatio = AspectHeight / AspectWidth;
+
+            CropHeight = AspectRatio * CropWidth;
+        }
+
+        private double AspectHeight { get; set; } = 1;
+
+        private void OnAspectHeightChanged(ChangeEventArgs eventArgs)
+        {
+            AspectHeight = double.Parse((string)eventArgs.Value);
+
+            AspectRatio = AspectHeight / AspectWidth;
+
+            CropHeight = AspectRatio * CropWidth;
         }
 
         private void OnRatioChange(ChangeEventArgs args)
@@ -114,8 +100,6 @@ namespace BlazorImageCropper.Pages
         {
             CropCurrentWidth = cropSize.Item1;
             CropCurrentHeight = cropSize.Item2;
-            CropWidth = cropSize.Item1;
-            CropHeight = cropSize.Item2;
         }
 
         private async Task DoneCrop()
@@ -126,7 +110,9 @@ namespace BlazorImageCropper.Pages
             base.StateHasChanged();
             await Task.Delay(10);// a hack, otherwise prompt won't show
             await JSRuntime.InvokeVoidAsync("console.log", "converted!");
-            PreviewImagePath = await args.GetBase64Async();
+
+            string base64String = await args.GetBase64Async();
+            PreviewImagePath = $"data:image/png;base64,{base64String}";
             args.Dispose();
             parsing = false;
         }

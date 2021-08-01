@@ -31,7 +31,7 @@
 {
     <div class="card">
         <div class="card-body py-0">
-            <Cropper CropperHeight="500" InitCropWidth="@CropWidth" InitCropHeight="@CropHeight" MaxCropedHeight="500" MaxCropedWidth="1920"
+            <Cropper CropperHeight="500" InitCropWidth="@CropWidth" InitCropHeight="@CropHeight" MaxCropedHeight="1080" MaxCropedWidth="1920"
                  @ref="cropper"
                  AspectRatio="AspectRatio==0?1:AspectRatio"
                  RequireAspectRatio="@IsAspectRatioEnabled"
@@ -41,10 +41,11 @@
                  OnSizeChanged="HandleCropSizeChanged"
                  AnimeGifEnable="true"></Cropper>
         </div>
-        <div class="card-footer justify-content-center">
+        <div class="card-footer text-center justify-content-center">
             @if (cropper != null)
             {
-                <input type="range" min="@(cropper.MinRatio*100)" max="@(cropper.MaxRatio*100)" value="@(ratio*100)" @oninput="OnRatioChange" />
+                <input type="range" min="@(cropper.MinRatio*100)" max="@(cropper.MaxRatio*100)"
+               value="@(ratio*100)" @oninput="OnRatioChange" placeholder ="Zoom range"/>
             }
         </div>
         <div class="card-footer flex-column">
@@ -52,9 +53,9 @@
                 <div class="input-group-text">
                     Current Crop Size
                 </div>
-                <span class="input-group-text">Height</span>
-                <div class="form-control">@CropCurrentWidth</div>
                 <span class="input-group-text">Width</span>
+                <div class="form-control">@CropCurrentWidth</div>
+                <span class="input-group-text">Height</span>
                 <div class="form-control">@CropCurrentHeight</div>
             </div>
             <div class="input-group mb-3">
@@ -62,16 +63,16 @@
                     <input @bind="IsAspectRatioEnabled" class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
                 </div>
                 <span class="input-group-text">Aspect Ratio</span>
-                <input @bind-value="AspectWidth" type="number" class="form-control" placeholder="Enter width">
+                <input @onchange="OnAspectWidthChanged" value="@AspectWidth" type="number" class="form-control" placeholder="Enter width">
                 <span class="input-group-text">:</span>
-                <input @bind-value="AspectHeight" type="number" class="form-control" placeholder="Enter height">
+                <input @onchange="OnAspectHeightChanged" value="@AspectHeight" type="number" class="form-control" placeholder="Enter height">
             </div>
 
             <div class="input-group">
                 <span class="input-group-text">Width</span>
-                <input @bind-value="CropWidth" type="number" min="1" max="500" class="form-control" placeholder="Enter width">
+                <input @onchange="OnCropWidthChanged" value="@CropWidth" type="number" min="1" max="500" class="form-control" placeholder="Enter width">
                 <span class="input-group-text">Height</span>
-                <input @bind-value="CropHeight" type="number" min="1" max="1920" class="form-control" placeholder="Enter height" disabled="@IsAspectRatioEnabled">
+                <input @onchange="OnCropHeightChanged" value="@CropHeight" type="number" min="1" max="1920" class="form-control" placeholder="Enter height">
             </div>
 
         </div>
