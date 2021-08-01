@@ -21,44 +21,12 @@ namespace BlazorImageCropper.Pages
 
         private bool ShowCroper { get; set; } = false;
 
-        private bool _aspectRatioEnalbed = false;
-        private bool IsAspectRatioEnabled
-        {
-            get => _aspectRatioEnalbed;
-            set
-            {
-                _aspectRatioEnalbed = value;
-                double currentAspect = AspectRatio;
-            }
-        }
+        private bool IsAspectRatioEnabled { get; set; }
 
         private double AspectRatio { get; set; } = 1d;
 
         private double ratio = 1;
 
-        private double CropWidth { get; set; } = 200;
-
-        private void OnCropWidthChanged(ChangeEventArgs eventArgs)
-        {
-            CropWidth = double.Parse((string)eventArgs.Value);
-
-            AspectWidth = CropWidth / CropHeight;
-            AspectHeight = 1;
-
-            AspectRatio = CropHeight / CropWidth;
-        }
-
-        private double CropHeight { get; set; } = 200;
-
-        private void OnCropHeightChanged(ChangeEventArgs eventArgs)
-        {
-            CropHeight = double.Parse((string)eventArgs.Value);
-
-            AspectWidth = CropWidth / CropHeight;
-            AspectHeight = 1;
-
-            AspectRatio = CropHeight / CropWidth;
-        }
 
         private double AspectWidth { get; set; } = 1;
 
@@ -67,8 +35,6 @@ namespace BlazorImageCropper.Pages
             AspectWidth = double.Parse((string)eventArgs.Value);
 
             AspectRatio = AspectHeight / AspectWidth;
-
-            CropHeight = AspectRatio * CropWidth;
         }
 
         private double AspectHeight { get; set; } = 1;
@@ -78,8 +44,6 @@ namespace BlazorImageCropper.Pages
             AspectHeight = double.Parse((string)eventArgs.Value);
 
             AspectRatio = AspectHeight / AspectWidth;
-
-            CropHeight = AspectRatio * CropWidth;
         }
 
         private void OnRatioChange(ChangeEventArgs args)
@@ -94,8 +58,8 @@ namespace BlazorImageCropper.Pages
             ShowCroper = true;
         }
 
-        private double CropCurrentWidth { get; set; } = 200;
-        private double CropCurrentHeight { get; set; } = 200;
+        private double CropCurrentWidth { get; set; }
+        private double CropCurrentHeight { get; set; }
         private void HandleCropSizeChanged((double, double) cropSize)
         {
             CropCurrentWidth = cropSize.Item1;
