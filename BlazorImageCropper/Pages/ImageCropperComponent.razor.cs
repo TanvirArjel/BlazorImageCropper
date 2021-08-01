@@ -114,6 +114,8 @@ namespace BlazorImageCropper.Pages
         {
             CropCurrentWidth = cropSize.Item1;
             CropCurrentHeight = cropSize.Item2;
+            CropWidth = cropSize.Item1;
+            CropHeight = cropSize.Item2;
         }
 
         private async Task DoneCrop()
